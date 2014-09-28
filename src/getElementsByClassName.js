@@ -3,7 +3,7 @@
 //   return document.getElementsByClassName(className);
 // };
 
-/********** User notes
+/********** Developer notes
 //element.childNodes returns array of direct child and decendants, lists them 
 //in order of direct decendants
 
@@ -19,60 +19,60 @@ var getElementsByClassName = function(className){
   //Stores results and returned variable
   var results = [];		
   
+  //Create variable shortened name for accessing body
   var body = document.body;
   
   //Checks body for classname
   if(body.className === className){
   	results.push(body);
+  	console.log('the body has a className');
   	}
   	
   var checkMore;	
-  //DELETE later
-  //console.log("This is the child node", body.childNodes);
-  
-  function checkNodes(node){
-  //Add recursive function here
-	if(!node){
-		node = document.body;
-		}
-		
-  	for (var i = 0; i< node.childNodes.length; i++){
 
-  		//Checks if it is an element, proceed to do following
-		if(node.childNodes[i].nodeType === 1){
+  //Recursive function
+  function checkNodes(node){
+	if(!node){
+		node = body;
+	}
+	
+	//Iterate through all the element nodes in the body	
+	var babyNodes = node.childNodes;
+
+	//Iterate through all the nodes in the body
+  	for (var i = 0; i< babyNodes.length; i++){
+
+  		//Checks if it is an element, proceed with checking elements for specific classname
+		if(babyNodes[i].nodeType === 1){
 		
-			//Checking 
-			if(node.childNodes[i].childNodes.length > 0)
+			//Checking if body childnodes have children (children's children), recusion is needed
+			if(babyNodes[i].childNodes.length > 0)
 			{	
-				checkMore = node.childNodes[i];
-				console.log('Has more than 1 child node recursion expected', checkMore);
+				checkMore = babyNodes[i]; 
+				//Recursion occurs: passes node with children to look deeper for child nodes that have children
 				checkNodes(checkMore); //Recursion
-				
 			}
-		//Checks if there is more than one class
-			if(node.childNodes[i].classList.length > 1){
-		
-				var moreClass = node.childNodes[i].classList;
+
+			//Checks if element node has more than one class 
+			if(babyNodes[i].classList.length > 1){
+				var moreClass = babyNodes[i].classList;
 			
 				for(var k=0; k < moreClass.length; k++){
-					//DELETE
-					console.log("this is the class name", moreClass[k]);
-				
 					if(moreClass[k] === className){
-						results.push(node.childNodes[i])
+						results.push(babyNodes[i])
 					}
 				}
 			}	
 			
-		if (node.childNodes[i].className === className){
-			console.log('nodetype',node.childNodes[i].nodeType);
-			results.push(node.childNodes[i]);
-		}
+			//Checks if node has class name
+			if (babyNodes[i].className === className){
+				results.push(babyNodes[i]);
+			}
 		}
   	}
   }
-  checkNodes();
-  console.log('This is the result of the function', results);
-  return results;
+
+  checkNodes();//Check body nodes and child nodes
+  return results;//Return elements array that match class name 
 
 };
