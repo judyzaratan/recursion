@@ -25,7 +25,6 @@ var getElementsByClassName = function(className){
   //Checks body for classname
   if(body.className === className){
   	results.push(body);
-  	console.log('the body has a className');
   	}
   	
   var checkMore;	
